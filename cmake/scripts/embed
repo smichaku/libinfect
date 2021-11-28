@@ -1,0 +1,31 @@
+#!/bin/sh
+
+RM=rm
+CP=cp
+BASENAME=basename
+
+OBJCOPY=$1
+SOURCE=$2
+TARGET=$3
+EMBEDDABLES=$4
+
+if [ -z "${EMBEDDABLES}" ] ; then
+    ${CP} ${SOURCE} ${TARGET}
+fi
+
+perror() {
+    echo "embed error: $@"
+    exit 1
+}
+
+for file in ${EMBEDDABLES} ; do
+    base=$(${BASENAME} ${file})
+
+    ${OBJCOPY} --add-section .embed:${base}=${file} ${SOURCE} ${TARGET}
+    if [ $? -ne 0 ] ; then
+      perror "Embedding failed on objcopy"
+    fi
+
+    SOURCE=${TARGET}
+done
+

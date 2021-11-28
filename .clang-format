@@ -1,0 +1,74 @@
+Language: Cpp
+Standard: Cpp11
+UseTab: Never
+IndentWidth: 4
+ContinuationIndentWidth: 4
+DerivePointerAlignment: false
+PointerAlignment: Right
+SpaceAroundPointerQualifiers: Both
+ColumnLimit: 80
+AlignAfterOpenBracket: BlockIndent
+AlignOperands: Align
+AllowAllParametersOfDeclarationOnNextLine: true
+BinPackArguments: false
+BinPackParameters: false
+AlwaysBreakTemplateDeclarations: Yes
+AlwaysBreakAfterReturnType: None
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Custom
+BreakBeforeTernaryOperators: false
+BraceWrapping:
+  AfterClass: false
+  AfterControlStatement: Never
+  AfterEnum: true
+  AfterFunction: true
+  AfterStruct: false
+  AfterNamespace: false
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+  SplitEmptyFunction: true
+  BeforeLambdaBody: true
+AllowShortFunctionsOnASingleLine: None
+BreakConstructorInitializers: AfterColon
+AllowAllConstructorInitializersOnNextLine: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+CompactNamespaces: false
+NamespaceIndentation: None
+IndentGotoLabels: false
+IndentCaseLabels: false
+IndentPPDirectives: None
+IndentWrappedFunctionNames: false
+AccessModifierOffset: -4
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 2
+SpaceAfterCStyleCast: true
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeCpp11BracedList: false
+SpaceInEmptyParentheses: false
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: false
+SpacesInContainerLiterals: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SortIncludes: false
+Cpp11BracedListStyle: false
+PenaltyReturnTypeOnItsOwnLine: 1000000
+PenaltyBreakAssignment: 100
+PenaltyExcessCharacter: 1000000
+PenaltyBreakBeforeFirstCallParameter: 0
+PenaltyBreakComment: 1000000
+PenaltyBreakFirstLessLess: 1000000
+PenaltyBreakString: 1000000
+PenaltyBreakTemplateDeclaration: 1000000
+PenaltyIndentedWhitespace: 0
+AllowShortLambdasOnASingleLine: All
+AlignConsecutiveMacros: Consecutive
+BreakStringLiterals: false
+TypenameMacros: ['ElfW']

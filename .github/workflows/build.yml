@@ -1,0 +1,67 @@
+
+name: Build and test libinfect products
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: [
+          archlinux-latest,
+          fedora-latest,
+          ubuntu-latest,
+          ubuntu-jammy,
+          ubuntu-focal,
+        ]
+      fail-fast: false
+    container:
+      image: ghcr.io/smichaku/containers:builder-${{ matrix.image }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GHCR_TOKEN }}
+      options: --cap-add=SYS_PTRACE
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Prepare build directory
+        run: |
+          mkdir build
+          cd build
+      - name: Configure
+        working-directory: build
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+      - name: Build
+        working-directory: build
+        run: |
+          cmake --build . -j
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: libinfect-${{ matrix.image }}
+          path: |
+            build/bin
+            build/lib
+      - name: Test
+        id: test
+        working-directory: build
+        continue-on-error: true
+        run: |
+          ctest
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results.${{ matrix.image }}
+          path: build/Testing
+      - name: Check test results
+        if: ${{ steps.test.outcome == 'failure' }}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            core.setFailed('Tests failed - see test-results artifact for details')

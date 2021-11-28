@@ -1,0 +1,73 @@
+
+name: Cross build and test libinfect products
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+
+jobs:
+  cross-build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [armv7]
+        include:
+          - arch: armv7
+            qemu: alarm
+      fail-fast: false
+    container:
+      image: ghcr.io/smichaku/containers:builder-archlinux-cross
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GHCR_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Prepare build directory
+        run: |
+          mkdir build
+          cd build
+      - name: Configure
+        working-directory: build
+        env:
+          TOOLCHAIN_FILE: /opt/toolchains/${{ matrix.arch }}/share/buildroot/toolchainfile.cmake
+        run: |
+          cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE -DCMAKE_BUILD_TYPE=Release ..
+      - name: Build
+        working-directory: build
+        run: |
+          cmake --build . -j
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: libinfect-cross-${{ matrix.arch }}
+          path: |
+            build/bin
+            build/lib
+      - name: Test
+        id: test
+        working-directory: /opt/qemu/${{ matrix.qemu }}
+        continue-on-error: true
+        run: |
+          cp $GITHUB_WORKSPACE/build/bin/*.tests share/tests/
+          ./run-vm
+          until [ -e share/tests/done ] ; do sleep 1 ; done
+          for f in share/tests/*.status ; do \
+            status=$(cat $f) ; \
+            [ $status = 0 ] || exit 1 ; \
+          done
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results.cross-${{ matrix.arch }}
+          path: |
+            /opt/qemu/${{ matrix.qemu }}/share/tests
+            !*.tests
+      - name: Check test results
+        if: ${{ steps.test.outcome == 'failure' }}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            core.setFailed('Tests failed - see test-results artifact for details')
