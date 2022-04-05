@@ -1,6 +1,6 @@
 include_guard()
 
-set(DEFAULT_BUILD_TYPE Debug)
+set(DEFAULT_BUILD_TYPE RelWithDebInfo)
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "Build type not specified, defaulting to ${DEFAULT_BUILD_TYPE}")
