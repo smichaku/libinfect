@@ -14,7 +14,7 @@ namespace {
 class ELF final {
 public:
     struct Section {
-        const ElfW(Shdr) * header;
+        const ElfW(Shdr) *header;
         const void *data;
     };
 

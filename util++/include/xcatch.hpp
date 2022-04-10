@@ -35,4 +35,3 @@ static inline void print_xerror_backtrace()
                                                                                \
         REQUIRE(err == 0);                                                     \
     }
-

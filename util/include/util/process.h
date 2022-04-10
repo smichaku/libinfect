@@ -39,7 +39,7 @@ typedef int (*map_callback_t)(const process_map_info_t *info, void *context);
 /* Get the address, size and header of the given section in the current
  * process. */
 int get_section_info(
-    const char *name, void **addr, size_t *size, ElfW(Shdr) * header
+    const char *name, void **addr, size_t *size, ElfW(Shdr) *header
 );
 
 /* Iterate over the given process' maps invoking 'callback' on each.

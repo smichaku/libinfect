@@ -16,11 +16,12 @@
 typedef void (*init_func_t)(void);
 typedef void (*fini_func_t)(void);
 
-static ElfW(Addr)
-    resolve_symbol(const struct module_header *header, ElfW(Word) symidx)
+static ElfW(Addr) resolve_symbol(
+    const struct module_header *header, ElfW(Word) symidx
+)
 {
     uintptr_t base;
-    const ElfW(Sym) * dynsym;
+    const ElfW(Sym) *dynsym;
 
     if (symidx >= header->dynsym_length) {
         return 0;
@@ -35,8 +36,8 @@ static void parse_reloc(
     const void *reloc_data,
     unsigned int idx,
     ElfW(Word) type,
-    ElfW(Addr) * offset,
-    ElfW(Xword) * info
+    ElfW(Addr) *offset,
+    ElfW(Xword) *info
 )
 {
     switch (type) {
@@ -105,7 +106,7 @@ static void __attribute__((constructor(0), used)) module_init(void *layout)
 {
     const struct module_header *header;
     uintptr_t base;
-    const ElfW(Addr) * init_array;
+    const ElfW(Addr) *init_array;
     unsigned int i;
 
     header = layout;
@@ -130,7 +131,7 @@ static void __attribute__((destructor(0), used)) module_fini(void *layout)
 {
     const struct module_header *header;
     uintptr_t base;
-    const ElfW(Addr) * fini_array;
+    const ElfW(Addr) *fini_array;
     unsigned int i;
 
     header = layout;

@@ -10,7 +10,7 @@ typedef struct elf *elf_t;
 
 typedef int (*elf_section_callback_t
 )(const char *name,
-  const ElfW(Shdr) * section_header,
+  const ElfW(Shdr) *section_header,
   const void *section_data,
   void *context);
 
@@ -25,12 +25,12 @@ void elf_close(elf_t elf);
 
 /* Get the ELF header. Note that the pointers returned are only valid for as
  * long as the ELF is opened. */
-int elf_header(elf_t elf, const ElfW(Ehdr) * *header);
+int elf_header(elf_t elf, const ElfW(Ehdr) **header);
 
 /* Get section header and data. Note that the pointers returned are only valid
  * for as long as the ELF is opened. */
 int elf_section(
-    elf_t elf, const char *name, const ElfW(Shdr) * *header, const void **data
+    elf_t elf, const char *name, const ElfW(Shdr) **header, const void **data
 );
 
 /* Invoke the given callback on each ELF section. */
@@ -39,7 +39,7 @@ int elf_iterate_sections(
 );
 
 /* Get the value of a symbol from the ELF dynamic symbols table. */
-int elf_symbol(elf_t elf, const char *symbol, ElfW(Addr) * addr);
+int elf_symbol(elf_t elf, const char *symbol, ElfW(Addr) *addr);
 
 #ifdef __cplusplus
 }

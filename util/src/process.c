@@ -34,13 +34,13 @@ static int load_address_callback(
 }
 
 int get_section_info(
-    const char *name, void **addr, size_t *size, ElfW(Shdr) * header
+    const char *name, void **addr, size_t *size, ElfW(Shdr) *header
 )
 {
     int err, ret = 0;
     elf_t elf = NULL;
-    const ElfW(Ehdr) * elf_hdr;
-    const ElfW(Shdr) * section_hdr;
+    const ElfW(Ehdr) *elf_hdr;
+    const ElfW(Shdr) *section_hdr;
     void *section;
 
     if (name == NULL || addr == NULL || size == NULL || header == NULL) {
