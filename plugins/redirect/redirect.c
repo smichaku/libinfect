@@ -3,10 +3,10 @@
 #include <sys/cdefs.h>
 #include <unistd.h>
 
-#include <baremetal/debug.h>
-#include <baremetal/file.h>
-#include <baremetal/process.h>
-#include <baremetal/format.h>
+#include <freestanding/debug.h>
+#include <freestanding/file.h>
+#include <freestanding/process.h>
+#include <freestanding/format.h>
 
 /* TODO: Use a prime slot for this. */
 #define TMPDIR "/tmp"
@@ -21,19 +21,19 @@ static int redirect(int fd, const char *path, int *oldfd)
 
     *oldfd = -1;
 
-    err = bm_open(path, O_CREAT | O_TRUNC | O_WRONLY, 0666, &pathfd);
+    err = fs_open(path, O_CREAT | O_TRUNC | O_WRONLY, 0666, &pathfd);
     if (err != 0) {
         ret = err;
         goto failed;
     }
 
-    err = bm_dup(fd, oldfd);
+    err = fs_dup(fd, oldfd);
     if (err != 0) {
         ret = err;
         goto failed;
     }
 
-    err = bm_dup2(pathfd, fd);
+    err = fs_dup2(pathfd, fd);
     if (err != 0) {
         ret = err;
         goto failed;
@@ -43,11 +43,11 @@ static int redirect(int fd, const char *path, int *oldfd)
 
 failed:
     if (*oldfd != -1) {
-        bm_dup2(*oldfd, fd);
+        fs_dup2(*oldfd, fd);
     }
 
     if (pathfd != -1) {
-        bm_close(pathfd);
+        fs_close(pathfd);
     }
 
     return ret;
@@ -56,14 +56,14 @@ failed:
 static void reset(void)
 {
     if (g_old_stdout != -1) {
-        bm_dup2(g_old_stdout, STDOUT_FILENO);
-        bm_close(g_old_stdout);
+        fs_dup2(g_old_stdout, STDOUT_FILENO);
+        fs_close(g_old_stdout);
         g_old_stdout = -1;
     }
 
     if (g_old_stderr != -1) {
-        bm_dup2(g_old_stderr, STDERR_FILENO);
-        bm_close(g_old_stderr);
+        fs_dup2(g_old_stderr, STDERR_FILENO);
+        fs_close(g_old_stderr);
         g_old_stderr = -1;
     }
 }
@@ -74,16 +74,16 @@ static void __attribute__((constructor)) init(void)
     pid_t pid;
     char path[128];
 
-    pid = bm_getpid();
+    pid = fs_getpid();
 
-    bm_snprintf(path, sizeof(path), "%s/redirect-%d.out", TMPDIR, pid);
+    fs_snprintf(path, sizeof(path), "%s/redirect-%d.out", TMPDIR, pid);
     err = redirect(STDOUT_FILENO, path, &g_old_stdout);
     if (err != 0) {
         reset();
         return;
     }
 
-    bm_snprintf(path, sizeof(path), "%s/redirect-%d.err", TMPDIR, pid);
+    fs_snprintf(path, sizeof(path), "%s/redirect-%d.err", TMPDIR, pid);
     err = redirect(STDERR_FILENO, path, &g_old_stderr);
     if (err != 0) {
         reset();

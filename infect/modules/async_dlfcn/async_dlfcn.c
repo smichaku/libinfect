@@ -3,10 +3,10 @@
 #include <errno.h>
 #include <sys/user.h>
 
-#include <baremetal/common.h>
-#include <baremetal/string.h>
-#include <baremetal/alloc.h>
-#include <baremetal/thread.h>
+#include <freestanding/common.h>
+#include <freestanding/string.h>
+#include <freestanding/alloc.h>
+#include <freestanding/thread.h>
 
 #include <module-promise.h>
 
@@ -52,7 +52,7 @@ static void *dlopen_routine(void *arg)
     struct module_promise *promise = args->promise;
     void *handle;
 
-    bm_free(args);
+    fs_free(args);
 
     handle = dlfcn.dlopen(filename, flags);
 
@@ -69,7 +69,7 @@ static void *dlclose_routine(void *arg)
     struct module_promise *promise = args->promise;
     int rv;
 
-    bm_free(args);
+    fs_free(args);
 
     rv = dlfcn.dlclose(handle);
 
@@ -103,7 +103,7 @@ int async_dlopen(
     struct dlopen_args *args = NULL;
     thread_t thread = NULL;
 
-    err = bm_malloc(sizeof(*args), (void **) &args);
+    err = fs_malloc(sizeof(*args), (void **) &args);
     if (err != 0) {
         ret = err;
         goto failed;
@@ -113,7 +113,7 @@ int async_dlopen(
     args->flags = flags;
     args->promise = promise;
 
-    err = bm_thread_create(dlopen_routine, args, DEFAULT_STACK_SIZE, &thread);
+    err = fs_thread_create(dlopen_routine, args, DEFAULT_STACK_SIZE, &thread);
     if (err != 0) {
         ret = err;
         goto failed;
@@ -125,7 +125,7 @@ int async_dlopen(
 
 failed:
     if (args != NULL) {
-        bm_free(args);
+        fs_free(args);
     }
 
     return ret;
@@ -137,7 +137,7 @@ int async_dlclose(void *handle, struct module_promise *promise)
     struct dlclose_args *args = NULL;
     thread_t thread = NULL;
 
-    err = bm_malloc(sizeof(*args), (void **) &args);
+    err = fs_malloc(sizeof(*args), (void **) &args);
     if (err != 0) {
         ret = err;
         goto failed;
@@ -146,7 +146,7 @@ int async_dlclose(void *handle, struct module_promise *promise)
     args->handle = handle;
     args->promise = promise;
 
-    err = bm_thread_create(dlclose_routine, args, DEFAULT_STACK_SIZE, &thread);
+    err = fs_thread_create(dlclose_routine, args, DEFAULT_STACK_SIZE, &thread);
     if (err != 0) {
         ret = err;
         goto failed;
@@ -158,7 +158,7 @@ int async_dlclose(void *handle, struct module_promise *promise)
 
 failed:
     if (args != NULL) {
-        bm_free(args);
+        fs_free(args);
     }
 
     return ret;
@@ -167,7 +167,7 @@ failed:
 bool async_dlfcn_ready(struct module_promise *promise)
 {
     if (module_promise_check(promise)) {
-        bm_thread_join(promise->thread, NULL);
+        fs_thread_join(promise->thread, NULL);
         return true;
     }
 

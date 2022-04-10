@@ -23,7 +23,7 @@ add_infect_module(infect.tests.module
 )
 
 target_link_libraries(infect.tests.module
-  PRIVATE baremetal
+  PRIVATE freestanding
 )
 
 #

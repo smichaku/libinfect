@@ -41,7 +41,7 @@ endif ()
 add_subdirectory(3rdparty)
 add_subdirectory(util)
 add_subdirectory(util++)
-add_subdirectory(baremetal)
+add_subdirectory(freestanding)
 add_subdirectory(infect)
 
 option(LIBINFECT_INCLUDE_TOOLS "Generate tools." ON)

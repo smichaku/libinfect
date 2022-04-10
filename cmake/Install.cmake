@@ -121,7 +121,7 @@ function (install_infect_export)
     DESTINATION ${INFECT_CMAKE_INSTALL_DIR}
   )
 
-  set(EXPORTED_CMAKE_FILES InfectConfig InfectPrograms InfectBaremetal InfectModule)
+  set(EXPORTED_CMAKE_FILES InfectConfig InfectPrograms InfectFreestanding InfectModule)
   foreach (FILE ${EXPORTED_CMAKE_FILES})
     install(
       FILES "cmake/${FILE}.cmake"

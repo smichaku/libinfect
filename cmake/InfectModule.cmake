@@ -6,7 +6,7 @@ function (add_infect_module TARGET SOURCES)
     ${SOURCES}
   )
 
-  baremetal_target(${TARGET})
+  freestanding_target(${TARGET})
 
   target_link_libraries(${TARGET}
     PRIVATE Infect::module_framework

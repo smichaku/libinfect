@@ -15,7 +15,7 @@ add_library(module_framework
 
 add_library(Infect::module_framework ALIAS module_framework)
 
-baremetal_target(module_framework)
+freestanding_target(module_framework)
 
 set_source_files_properties(init.c
   PROPERTIES

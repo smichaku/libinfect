@@ -30,7 +30,7 @@ on dynamic linkage support in the remote process. As modules may not rely on
 standard system libraries (such as libc) they must be self-contained and
 provide all required functionality on their own. The libinfect project
 provides a small set of libc function and syscall wrappers in the
-libbaremetal library as well as a CMake module (InfectModule) for adding
+libfreestanding library as well as a CMake module (InfectModule) for adding
 modules. For more information, please see [How to write you own libinfect
 module](doc/module.md).
 
