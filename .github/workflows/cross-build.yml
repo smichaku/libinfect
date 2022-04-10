@@ -1,5 +1,5 @@
 
-name: Cross build and test libinfect products
+name: cross-build
 
 on:
   push:
