@@ -102,3 +102,17 @@ libinfect relies on the calling process having sufficient privileges for tracing
 (ptrace(2)) the remote process. This means the remote process must either be a
 child of the calling process or that the process has the CAP_SYS_PTRACE
 capability.
+
+Dependencies
+------------
+
+Libinfect uses some bundled 3rd party libraries
+
+  * [mpaland/printf](https://github.com/mpaland/printf) - Provides the
+  printf / sprintf implementation for libfreestanding.
+
+  * [Catch2](https://github.com/catchorg/Catch2) - The test framework for the
+  project.
+
+  * [CLI11](https://github.com/CLIUtils/CLI11) - The command line parser for
+  tools.
