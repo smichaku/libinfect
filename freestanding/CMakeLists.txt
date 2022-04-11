@@ -12,7 +12,6 @@ set(FREESTANDING_SOURCES
   thread.c
   alloc.c
   format.c
-  printf.c
   putchar.c
 )
 list(TRANSFORM FREESTANDING_SOURCES PREPEND src/)
@@ -26,6 +25,7 @@ add_library(freestanding
   OBJECT
   ${FREESTANDING_SOURCES}
   ${FREESTANDING_ARCH_SOURCES}
+  ${PRINTF_SOURCES}
 )
 
 add_library(Infect::freestanding ALIAS freestanding)
@@ -40,6 +40,7 @@ target_include_directories(freestanding
     $<INSTALL_INTERFACE:include>
   PRIVATE internal/include
   PRIVATE arch/${_ARCH}
+  PRIVATE ${PRINTF_INCLUDE_DIR}
 )
 
 target_compile_options(freestanding
