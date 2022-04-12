@@ -1,8 +1,8 @@
 libinfect
 =========
 
-[![Build Status](https://github.com/smichaku/libinfect/actions/workflows/build.yml/badge.svg)](https://github.com/smichaku/libinfect/actions/workflows/build.yml "Build Statues")
-[![Cross-build Status](https://github.com/smichaku/libinfect/actions/workflows/cross-build.yml/badge.svg)](https://github.com/smichaku/libinfect/actions/workflows/cross-build.yml "Cross-build Statues")
+[![Build Status](https://github.com/smichaku/libinfect/actions/workflows/build.yml/badge.svg)](https://github.com/smichaku/libinfect/actions/workflows/build.yml "Build Status")
+[![Cross-build Status](https://github.com/smichaku/libinfect/actions/workflows/cross-build.yml/badge.svg)](https://github.com/smichaku/libinfect/actions/workflows/cross-build.yml "Cross-build Status")
 
 
 A remote process code injection library for Linux
